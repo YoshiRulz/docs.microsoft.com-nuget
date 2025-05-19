@@ -141,6 +141,8 @@ In this case, define different versions for each target framework in your `Direc
 </Project>
 ```
 
+See [*Adding a PackageReference condition*](./package-references-in-project-files.md#adding-a-packagereference-condition) for more complex examples.
+
 ## Transitive Pinning
 
 You can automatically override a transitive package version without an explicit top-level `<PackageReference />` item by opting into a feature known as transitive pinning.

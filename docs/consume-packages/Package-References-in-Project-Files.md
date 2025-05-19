@@ -172,6 +172,21 @@ Conditions can also be applied at the `ItemGroup` level and will apply to all ch
 </ItemGroup>
 ```
 
+When you have many targets, it may be better to match ranges of TFMs, in which case you can use [`IsTargetFrameworkCompatible`](/visualstudio/msbuild/property-functions#msbuild-targetframework-and-targetplatform-functions):
+```xml
+<ItemGroup>
+    <!-- Reference System.Globalization.Extensions when target doesn't subsume .NET Standard 2.0: -->
+    <PackageReference Include="System.Globalization.Extensions" Condition=" !$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.0')) " />
+
+    <!-- Reference Microsoft.Bcl.HashCode when target doesn't subsume .NET Standard 2.1 nor .NET Core 2.1: -->
+    <PackageReference Include="Microsoft.Bcl.HashCode" Condition=" !$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1')) AND !$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netcoreapp2.1')) " />
+
+    <!-- You can also check TargetFrameworkIdentifier instead of matching all versions of a framework. The property is available in .csproj files. -->
+    <!-- Reference System.Resources.Extensions when targeting a .NET Framework project (for building non-string resources in WinForms): -->
+    <PackageReference Include="System.Resources.Extensions" Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' " />
+</ItemGroup>
+```
+
 ## GeneratePathProperty
 
 This feature is available with NuGet **5.0** or above and with Visual Studio 2019 **16.0** or above.
