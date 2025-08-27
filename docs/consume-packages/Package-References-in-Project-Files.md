@@ -45,6 +45,8 @@ The convention for specifying the version of a package is the same as when using
 
 In the example above, 3.6.0 means any version that is >=3.6.0 with preference for the lowest version, as described in [Package versioning](../concepts/package-versioning.md#version-ranges).
 
+When package versions are [managed centrally](./central-package-management.md), you must leave out the `Version` from each `PackageReference`.
+
 ## Using PackageReference for a project with no package dependencies
 
 Advanced: If you have no packages installed in a project (no PackageReferences in project file and no packages.config file), but want the project to be restored as PackageReference style, you can set a Project property RestoreProjectStyle to PackageReference in your project file.
@@ -84,7 +86,7 @@ You might be using a dependency purely as a development harness and might not wa
 <ItemGroup>
     <!-- ... -->
 
-    <PackageReference Include="Contoso.Utility.UsefulStuff" Version="3.6.0">
+    <PackageReference Include="Contoso.Utility.UsefulStuff">
         <PrivateAssets>all</PrivateAssets>
     </PackageReference>
 
@@ -120,7 +122,7 @@ Allowable values for these tags are as follows, with multiple values separated b
     <!-- ... -->
     <!-- Everything except the content files will be consumed by the project -->
     <!-- Everything except content files and analyzers will flow to the parent project-->
-    <PackageReference Include="Contoso.Utility.UsefulStuff" Version="3.6.0">
+    <PackageReference Include="Contoso.Utility.UsefulStuff">
         <IncludeAssets>all</IncludeAssets> <!-- Default is `all`, can be omitted-->
         <ExcludeAssets>contentFiles</ExcludeAssets>
         <PrivateAssets>contentFiles;analyzers</PrivateAssets>
@@ -128,7 +130,7 @@ Allowable values for these tags are as follows, with multiple values separated b
     <!-- ... -->
     <!-- Everything except the compile will be consumed by the project -->
     <!-- Everything except contentFiles will flow to the parent project-->
-    <PackageReference Include="Contoso.Utility.SomeOtherUsefulStuff" Version="3.6.0">
+    <PackageReference Include="Contoso.Utility.SomeOtherUsefulStuff">
         <ExcludeAssets>compile</ExcludeAssets>
         <PrivateAssets>contentFiles</PrivateAssets>
     </PackageReference>
@@ -150,7 +152,7 @@ For example, say you're targeting `netstandard1.4` as well as `net452` but have 
 ```xml
 <ItemGroup>
     <!-- ... -->
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" Condition="'$(TargetFramework)' == 'net452'" />
+    <PackageReference Include="Newtonsoft.Json" Condition="'$(TargetFramework)' == 'net452'" />
     <!-- ... -->
 </ItemGroup>
 ```
@@ -164,8 +166,8 @@ Conditions can also be applied at the `ItemGroup` level and will apply to all ch
 ```xml
 <ItemGroup Condition = "'$(TargetFramework)' == 'net452'">
     <!-- ... -->
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Contoso.Utility.UsefulStuff" Version="3.6.0" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Contoso.Utility.UsefulStuff" />
     <!-- ... -->
 </ItemGroup>
 ```
@@ -217,7 +219,7 @@ In the project file, specify the aliases as follows:
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="NuGet.Versioning" Version="5.8.0" Aliases="ExampleAlias" />
+    <PackageReference Include="NuGet.Versioning" Aliases="ExampleAlias" />
   </ItemGroup>
 ```
 
@@ -266,7 +268,7 @@ Examples:
 </PropertyGroup>
 ...
 <ItemGroup>
-    <PackageReference Include="Contoso.Package" Version="1.0.0" NoWarn="NU1605" />
+    <PackageReference Include="Contoso.Package" NoWarn="NU1605" />
 </ItemGroup>
 ```
 
